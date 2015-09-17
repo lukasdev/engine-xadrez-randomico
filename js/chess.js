@@ -42,7 +42,7 @@ $(function(){
 	colunas[1] = 'b';
 	colunas[2] = 'c';
 	colunas[3] = 'd';
-	colunas[7] = 'e';
+	colunas[4] = 'e';
 	colunas[5] = 'f';
 	colunas[6] = 'g';
 	colunas[7] = 'h';
@@ -78,11 +78,12 @@ $(function(){
 	$('body').on('click', '.square-board', function(){
 		var temPeca = $(this).find('.piece').size();
 		var idCasa = $(this).attr('id');
+		//verifyPiece(pecaEscolhida, ultimaCasaEscolhida);
 
-		/*var movimentosPossiveis = verifyPiece(pecaEscolhida, ultimaCasaEscolhida);
+		var movimentosPossiveis = verifyPiece(pecaEscolhida, ultimaCasaEscolhida);
 		$.each(movimentosPossiveis, function(i, sqr){
 			$('#'+sqr).addClass('possible');
-		});*/
+		});
 
 
 		if(idCasa != ultimaCasaEscolhida){
@@ -104,7 +105,84 @@ $(function(){
 	});
 
 	function verifyPiece(piece, square){
+		var tipo = piece.attr('class');
+		var possibleMoves = {};
 
+		if(tipo == 'piece pawn-black'){
+			possibleMoves = findMovesPawn(square, 'black');
+		}else if(tipo == 'piece pawn-white'){
+			possibleMoves = findMovesPawn(square, 'white');
+		}
+
+		return possibleMoves;
+	}
+
+	function findMovesPawn(square, type){
+
+		var line = Number(square[1]);
+		var column = square[0];
+		var linha = line+1;
+		var moves = {};
+		var x = 0;
+
+		var indiceColum = objSearch(colunas, column);
+		var proxima = Number(indiceColum)+1;
+		var anterior = Number(indiceColum)-1;
+
+		if(type == 'white'){
+			if(line == 2){
+				//indo pra frente
+				for(var i = 0; i <2; i++){
+					var casa = $ ('#'+column+(linha++));
+					if(casa.find('.piece').size() == 0){
+						x++;
+						moves[x] = casa.attr('id');
+					}else{
+						break;
+					}
+				}
+			}else{
+				//indo pra frente
+				for(var i = 0; i<1; i++){
+					var casa = $('#'+column+(linha++));
+					if(casa.find('.piece').size() == 0){
+						x++;
+						moves[x] = casa.attr('id');
+					}else{
+						break;
+					}
+				}
+			}
+
+			//verifica duas diagonais
+			var linhaDiagonal = line+1;
+			if(objSearchIndex(colunas, proxima) != null){
+				var coluna = colunas[proxima]+linhaDiagonal;
+				//alert('encontrou '+coluna);
+				if($('#'+coluna).find('.piece').size() == 1){
+					var pecaEncontrada = $('#'+coluna).find('.piece').attr('class');
+					if(pecaEncontrada.indexOf('black') >= 0){
+						x++;
+						moves[x] = coluna;
+					}
+				}
+			}
+
+			if(objSearchIndex(colunas, anterior) != null){
+				var coluna = colunas[anterior]+linhaDiagonal;
+				if($('#'+coluna).find('.piece').size() == 1){
+					var pecaEncontrada = $('#'+coluna).find('.piece').attr('class');
+					if(pecaEncontrada.indexOf('black') >= 0){
+						x++;
+						moves[x] = coluna;
+					}
+				}
+			}
+		}else{
+			alert('Achar movimentos para o peão preto');
+		}
+
+		return moves;
 	}
 	function newGame(){
 		$('.square-board').each(function(){
@@ -132,8 +210,8 @@ $(function(){
 		}
 	}
 
-	printBoard();
-	newGame();
+	//printBoard();
+	//newGame();
 
 	function objSearch(obj, valor){
 		var retorno = null;

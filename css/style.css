@@ -19,16 +19,17 @@ body{background:#eee;}
 }
 .box .board{
 	float:left;
-	width:512px;
-	height:512px;
+	width:529px;
+	height:529px;
 }
 
 .board .square-board{
 	float:left;
 	width:64px;
 	height:64px;
+	border:1px solid transparent;
 }
-.square-board.possible{background:#069;}
+.square-board.possible{background:#069; border:1px solid #fff;}
 .dark{background:#4B7399;}
 .light{background:#EAE9D2;}
 
