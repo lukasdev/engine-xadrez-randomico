@@ -37,7 +37,75 @@ $(function(){
 		h1: 'rook-white'
 	};
 
+	var colunas = {};
+	colunas[0] = 'a';
+	colunas[1] = 'b';
+	colunas[2] = 'c';
+	colunas[3] = 'd';
+	colunas[7] = 'e';
+	colunas[5] = 'f';
+	colunas[6] = 'g';
+	colunas[7] = 'h';
+	var mate = false;
+	var movesKings = {'black':{}, 'white': {}};
+	var movesPecaCheck = {};
+	var checking = false;
+	var checkLonge = false;
 
+	var jogador = 'white';
+	var vezdo = 'white';
+
+	var clicou = 0;
+	var pecaEscolhida = '';
+	var ultimaCasaEscolhida = '';
+
+	$('body').on('click', '.piece', function(){
+		var classe = $(this).attr('class');
+		var casa = $(this).parent();
+		var casaId = casa.attr('id');
+
+		if(vezdo == jogador){
+			if(classe.indexOf(jogador) >= 0){
+				clicou = 1;
+				ultimaCasaEscolhida = casaId;
+				pecaEscolhida = $(this);
+				$('.square-board').removeClass('possible');
+			}
+		}
+	});
+
+	var vai_para = '';
+	$('body').on('click', '.square-board', function(){
+		var temPeca = $(this).find('.piece').size();
+		var idCasa = $(this).attr('id');
+
+		/*var movimentosPossiveis = verifyPiece(pecaEscolhida, ultimaCasaEscolhida);
+		$.each(movimentosPossiveis, function(i, sqr){
+			$('#'+sqr).addClass('possible');
+		});*/
+
+
+		if(idCasa != ultimaCasaEscolhida){
+			vai_para = idCasa;
+
+			if(objSearch(movimentosPossiveis, idCasa) != null){
+				if(mate == false){
+					//jogar($(this));
+					alert('Pode jogar');
+				}else{
+					alert('Check mate');
+				}
+
+				//engine(vezdo, checking);
+			}else{
+				alert('Jogada é invalida');
+			}
+		}
+	});
+
+	function verifyPiece(piece, square){
+
+	}
 	function newGame(){
 		$('.square-board').each(function(){
 			var square = $(this);

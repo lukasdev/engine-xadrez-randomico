@@ -28,6 +28,7 @@ body{background:#eee;}
 	width:64px;
 	height:64px;
 }
+.square-board.possible{background:#069;}
 .dark{background:#4B7399;}
 .light{background:#EAE9D2;}
 
