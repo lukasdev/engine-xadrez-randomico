@@ -178,6 +178,118 @@ $(function(){
 			}			
 		}
 
+		//top left
+		nColunaAtual = '';
+		var colTopLeft = '';
+		linha = line+1;
+		for(var i = 0; i <= 6; i++){
+			if(nColunaAtual == ''){
+				nColunaAtual = objSearch(colunas, coluna);
+				colTopLeft = nColunaAtual-1;
+			}
+			if(objSearchIndex(colunas, colTopLeft) != null){
+				if(colunas[colTopLeft] != coluna){
+					var lineTopLeft = linha++;
+					var casa = colunas[colTopLeft]+lineTopLeft;
+
+					if($('#'+casa).size() == 1){
+						if($('#'+casa).find('.piece').size() == 1){
+							var encontrada = $('#'+casa).find('.piece').attr('class');
+							if(encontrada.indexOf(typeAttack) >= 0){
+								x++;
+								moves[x] = casa;
+								break;
+							}else{
+								break;
+							}
+						}else{
+							x++;
+							moves[x] = casa;
+						}
+					}else{
+						break;
+					}
+				}
+				colTopLeft--;
+			}			
+		}
+
+
+
+		//bottom right
+		nColunaAtual = '';
+		linha = line+1;
+		var lineDescer = line-1;
+		var colBottomRight = '';
+		for(var i = 0; i <= 6; i++){
+			if(nColunaAtual == ''){
+				nColunaAtual = objSearch(colunas, coluna);
+				colBottomRight = nColunaAtual++;
+			}
+			if(objSearchIndex(colunas, colBottomRight) != null){
+				if(colunas[colBottomRight] != coluna){
+					var lineBottomRight = lineDescer--;
+					var casa = colunas[colBottomRight]+lineBottomRight;
+
+					if($('#'+casa).size() == 1){
+						if($('#'+casa).find('.piece').size() == 1){
+							var encontrada = $('#'+casa).find('.piece').attr('class');
+							if(encontrada.indexOf(typeAttack) >= 0){
+								x++;
+								moves[x] = casa;
+								break;
+							}else{
+								break;
+							}
+						}else{
+							x++;
+							moves[x] = casa;
+						}
+					}else{
+						break;
+					}
+				}
+				colBottomRight++;
+			}			
+		}
+
+
+		//bottom left
+		nColunaAtual = '';
+		linha = line+1;
+		lineDescer = line-1;
+		var colBottomLeft = '';
+		for(var i = 0; i <= 6; i++){
+			if(nColunaAtual == ''){
+				nColunaAtual = objSearch(colunas, coluna);
+				colBottomLeft = nColunaAtual--;
+			}
+			if(objSearchIndex(colunas, colBottomLeft) != null){
+				if(colunas[colBottomLeft] != coluna){
+					var lineBottomLeft = lineDescer--;
+					var casa = colunas[colBottomLeft]+lineBottomLeft;
+
+					if($('#'+casa).size() == 1){
+						if($('#'+casa).find('.piece').size() == 1){
+							var encontrada = $('#'+casa).find('.piece').attr('class');
+							if(encontrada.indexOf(typeAttack) >= 0){
+								x++;
+								moves[x] = casa;
+								break;
+							}else{
+								break;
+							}
+						}else{
+							x++;
+							moves[x] = casa;
+						}
+					}else{
+						break;
+					}
+				}
+				colBottomLeft--;
+			}			
+		}
 		return moves;
 	}
 
