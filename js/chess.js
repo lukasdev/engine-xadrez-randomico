@@ -114,7 +114,71 @@ $(function(){
 			possibleMoves = findMovesPawn(square, 'white');
 		}
 
+
+		if(tipo.indexOf('bishop') >= 0){
+			possibleMoves = findMovesBishop(square, tipo);
+		}
 		return possibleMoves;
+	}
+
+
+	function findMovesBishop(square, tipo){
+		if(tipo.indexOf('black') >= 0){
+			var typeAttack = 'white';
+		}else{
+			var typeAttack = 'black';
+		}
+
+		var line = Number(square[1]);
+		var linha = line+1;
+		var coluna = square[0];
+		var x = 0;
+		var moves = {};
+
+		var nColunaAtual = '';
+		var colTopRight = '';
+
+		//+1 coluna +1 linha pra cima e direita (top right)
+		//-1 coluna -1 linha pra baixo esquerda (bottom left)
+		//+1 coluna -1 linha pra baixo direita (bottom right)
+		//-1 coluna +1 linha pra cima esquerda (top left)
+
+		//subir direita (top right)
+
+		for(var i = 0; i <= 6; i++){
+			if(nColunaAtual == ''){
+				nColunaAtual = objSearch(colunas, coluna);
+				colTopRight = nColunaAtual++;
+			}
+
+			if(objSearchIndex(colunas, colTopRight) != null){
+				if(colunas[colTopRight] != coluna){
+					var lineTopRight = linha++;
+					var casa = colunas[colTopRight]+lineTopRight;
+
+					if($('#'+casa).size() == 1){
+						if($('#'+casa).find('.piece').size() == 1){
+							var encontrada = $('#'+casa).find('.piece').attr('class');
+							if(encontrada.indexOf(typeAttack) >= 0){
+								x++;
+								moves[x] = casa;
+								break;
+							}else{
+								break;
+							}
+						}else{
+							x++;
+							moves[x] = casa;
+						}
+					}else{
+						break;
+					}
+				}
+				colTopRight++;
+			}			
+		}
+
+		return moves;
 	}
 
 	function findMovesPawn(square, type){
@@ -179,7 +243,61 @@ $(function(){
 				}
 			}
 		}else{
-			alert('Achar movimentos para o peão preto');
+			//movimentos peões pretos
+			if(line == 7){
+				//indo pra frente
+				for(var i = 7; i>=5; --i){
+
+					if(i != 7){
+						var casa = $ ('#'+column+i);
+						if(casa.find('.piece').size() == 0){
+							x++;
+							moves[x] = casa.attr('id');
+						}else{
+							break;
+						}
+					}
+				}
+			}else{
+				//indo pra frente
+				for(var i = line; i >= line-1; --i){
+					if(i != line){
+						var casa = $('#'+column+i);
+						if(casa.find('.piece').size() == 0){
+							x++;
+							moves[x] = casa.attr('id');
+						}else{
+							break;
+						}
+					}
+				}
+			}
+
+			//verifica duas diagonais
+			var linhaDiagonal = line-1;
+			if(objSearchIndex(colunas, proxima) != null){
+				var coluna = colunas[proxima]+linhaDiagonal;
+				//alert('encontrou '+coluna);
+				if($('#'+coluna).find('.piece').size() == 1){
+					var pecaEncontrada = $('#'+coluna).find('.piece').attr('class');
+					if(pecaEncontrada.indexOf('white') >= 0){
+						x++;
+						moves[x] = coluna;
+					}
+				}
+			}
+
+			if(objSearchIndex(colunas, anterior) != null){
+				var coluna = colunas[anterior]+linhaDiagonal;
+				if($('#'+coluna).find('.piece').size() == 1){
+					var pecaEncontrada = $('#'+coluna).find('.piece').attr('class');
+					if(pecaEncontrada.indexOf('white') >= 0){
+						x++;
+						moves[x] = coluna;
+					}
+				}
+			}
+			//termina movimentos peões pretos
 		}
 
 		return moves;
