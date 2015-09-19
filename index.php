@@ -79,6 +79,8 @@
 			<div class="square-board light" id="h1"><div class="piece rook-white"></div></div>
 			</div>
 			<div class="stats">
+				<input type="text" name="fen" id="fenStr" placeholder="String Fen"/>
+				<button id="aplicarFen">Aplicar</button>
 				<div class="player"></div>
 				<div class="notation"></div>
 				<div class="player"></div>

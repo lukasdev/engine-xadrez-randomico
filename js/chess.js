@@ -1,42 +1,4 @@
 $(function(){
-	var initialPosition = {
-		a8: 'rook-black',
-		b8: 'knight-black',
-		c8: 'bishop-black',
-		d8: 'queen-black',
-		e8: 'king-black',
-		f8: 'bishop-black',
-		g8: 'knight-black',
-		h8: 'rook-black',
-
-		a7: 'pawn-black',
-		b7: 'pawn-black',
-		c7: 'pawn-black',
-		d7: 'pawn-black',
-		e7: 'pawn-black',
-		f7: 'pawn-black',
-		g7: 'pawn-black',
-		h7: 'pawn-black',
-
-		a2: 'pawn-white',
-		b2: 'pawn-white',
-		c2: 'pawn-white',
-		d2: 'pawn-white',
-		e2: 'pawn-white',
-		f2: 'pawn-white',
-		g2: 'pawn-white',
-		h2: 'pawn-white',
-
-		a1: 'rook-white',
-		b1: 'knight-white',
-		c1: 'bishop-white',
-		d1: 'queen-white',
-		e1: 'king-white',
-		f1: 'bishop-white',
-		g1: 'knight-white',
-		h1: 'rook-white'
-	};
-
 	var colunas = {};
 	colunas[0] = 'a';
 	colunas[1] = 'b';
@@ -58,6 +20,15 @@ $(function(){
 	var clicou = 0;
 	var pecaEscolhida = '';
 	var ultimaCasaEscolhida = '';
+
+	$('#aplicarFen').on('click', function(){
+		var fenString = $('#fenStr').val();
+		if(fenString == ''){
+			alert('informe uma strin fen');
+		}else{
+			parseFen(fenString);
+		}
+	});
 
 	$('body').on('click', '.piece', function(){
 		var classe = $(this).attr('class');
@@ -103,6 +74,79 @@ $(function(){
 			}
 		}
 	});
+
+	var fenStr = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w';
+	function parseFen(fen){
+		$('.square-board').html('');
+		var linha = 8;
+		var empty = '';
+		var piece = '';
+		var col = 0;
+		var space = 0;
+
+		for(var i = 0; i<fen.length; ++i){
+
+			if(space == 0){
+				switch(fen[i]){
+					case 'r': piece = 'piece rook-black'; break;
+					case 'R': piece = 'piece rook-white'; break;
+					case 'b': piece = 'piece bishop-black'; break;
+					case 'B': piece = 'piece bishop-white'; break;
+					case 'n': piece = 'piece knight-black'; break;
+					case 'N': piece = 'piece knight-white'; break;
+					case 'q': piece = 'piece queen-black'; break;
+					case 'Q': piece = 'piece queen-white'; break;
+					case 'k': piece = 'piece king-black'; break;
+					case 'K': piece = 'piece king-white'; break;
+					case 'p': piece = 'piece pawn-black'; break;
+					case 'P': piece = 'piece pawn-white'; break;
+
+					case '1':
+					case '2':
+					case '3':
+					case '4':
+					case '5':
+					case '6':
+					case '7':
+					case '8':
+						empty = fen[i];
+						break;
+
+					case '/':
+						linha--;
+					break;
+				}
+			}
+
+			if(fen[i] == ' '){
+				space = 1;
+			}
+			if(empty != ''){
+				for(var n = 0; n<Number(empty); n++){
+					col++;
+				}
+				empty = '';
+			}
+
+			if(piece != ''){
+				$('#'+colunas[col]+linha).html('<div class="'+piece+'"></div>');
+				col++;
+				piece = '';
+			}
+
+			if(col > 7){
+				col =0;
+			}
+
+			if(i == (fen.length-1) && fen[i] == 'w'){
+				vezdo = 'white';
+				jogador = 'white';
+			}else if(i == (fen.length-1) && fen[i] == 'b'){
+				vezdo = 'black';
+				jogador = 'black';
+			}
+		}
+	}
 
 	function verifyPiece(piece, square){
 		var tipo = piece.attr('class');
@@ -414,16 +458,8 @@ $(function(){
 
 		return moves;
 	}
-	function newGame(){
-		$('.square-board').each(function(){
-			var square = $(this);
-			var sq = square.attr('id');
-
-			if(objSearchIndex(initialPosition, sq) != null){
-				//console.log('achou');
-				$(this).html('<div class="piece '+initialPosition[sq]+'"></div>');
-			}
-		});
+	function newGame(fenString){
+		parseFen(fenString);
 	}
 
 	function printBoard(){
@@ -441,7 +477,7 @@ $(function(){
 	}
 
 	//printBoard();
-	//newGame();
+	newGame(fenStr);
 
 	function objSearch(obj, valor){
 		var retorno = null;
