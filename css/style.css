@@ -19,27 +19,44 @@ body{background:#eee;}
 }
 .box .board{
 	float:left;
-	width:529px;
-	height:529px;
+	width:512px;
+	height:512px;
 }
 
 .board .square-board{
 	float:left;
 	width:64px;
 	height:64px;
-	border:1px solid transparent;
+	position:relative;
 }
-.square-board.possible{background:#069; border:1px solid #fff;}
+.square-board.possible::before{
+	content: '';
+	position:absolute;
+	top:50%;
+	left:50%;
+	width:20px;
+	height:20px;
+	background:rgba(255,255,255,0.7);
+	border-radius:50%;
+
+	margin-left:-10px;
+	margin-top:-10px;
+}
+.square-board.possible:hover{background:#8BC0EB; cursor:pointer;}
 .dark{background:#4B7399;}
 .light{background:#EAE9D2;}
 
 .box .stats{
 	float:right;
 	width:300px;
+}
+.box .status{
+	float:right;
+	width:100%;
 	overflow:hidden;
+	border-radius:5px;
 	box-shadow:#666 0px 2px 2px;
 }
-
 .piece{float:left; width:64px; height:64px; background-size:cover !important; cursor:pointer;}
 
 .piece.rook-black{background:url(../images/rook-black.png);}
@@ -67,7 +84,7 @@ body{background:#eee;}
 	float:left;
 	background:#ebebeb;
 	width:100%;
-	height:400px;
+	height:395px;
 }
 
 #fenStr{
