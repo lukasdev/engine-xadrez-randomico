@@ -46,9 +46,9 @@
 			<div class="square-board light" id="a4"></div>
 			<div class="square-board dark" id="b4"></div>
 			<div class="square-board light" id="c4"></div>
-			<div class="square-board dark" id="d4"></div>
+			<div class="square-board dark" id="d4"><div class="piece rook-white"></div></div>
 			<div class="square-board light" id="e4"></div>
-			<div class="square-board dark" id="f4"></div>
+			<div class="square-board dark" id="f4"><div class="piece pawn-white"></div></div>
 			<div class="square-board light" id="g4"></div>
 			<div class="square-board dark" id="h4"></div>
 			<div class="square-board dark" id="a3"></div>
@@ -65,7 +65,7 @@
 			<div class="square-board light" id="c2"><div class="piece pawn-white"></div></div>
 			<div class="square-board dark" id="d2"><div class="piece pawn-white"></div></div>
 			<div class="square-board light" id="e2"><div class="piece pawn-white"></div></div>
-			<div class="square-board dark" id="f2"><div class="piece pawn-white"></div></div>
+			<div class="square-board dark" id="f2"></div>
 			<div class="square-board light" id="g2"><div class="piece pawn-white"></div></div>
 			<div class="square-board dark" id="h2"><div class="piece pawn-white"></div></div>
 
@@ -76,7 +76,7 @@
 			<div class="square-board dark" id="e1"><div class="piece king-white"></div></div>
 			<div class="square-board light" id="f1"><div class="piece bishop-white"></div></div>
 			<div class="square-board dark" id="g1"></div>
-			<div class="square-board light" id="h1"><div class="piece rook-white"></div></div>
+			<div class="square-board light" id="h1"></div>
 			</div>
 			<div class="stats">
 				<input type="text" name="fen" id="fenStr" placeholder="String Fen"/>

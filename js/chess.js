@@ -14,8 +14,8 @@ $(function(){
 	var checking = false;
 	var checkLonge = false;
 
-	var jogador = 'black';
-	var vezdo = 'black';
+	var jogador = 'white';
+	var vezdo = 'white';
 
 	var clicou = 0;
 	var pecaEscolhida = '';
@@ -163,9 +163,115 @@ $(function(){
 			possibleMoves = findMovesBishop(square, tipo);
 		}else if(tipo.indexOf('knight') >= 0){
 			possibleMoves = findMovesKnight(square, tipo);
+		}else if(tipo.indexOf('rook') >= 0){
+			possibleMoves = findMovesRook(square, tipo);
 		}
 		return possibleMoves;
 	}
+
+	function findMovesRook(square, tipo){
+		if(tipo.indexOf('black') >= 0){
+			var typeAttack = 'white';
+		}else{
+			var typeAttack = 'black';
+		}
+
+		var line = Number(square[1]);
+		var linha = line+1;
+		var coluna = square[0];
+		var nColuna = Number(objSearch(colunas, coluna));
+		var x = 0;
+		var moves = {};
+
+		//para cima
+
+		for(var i = 0; i < 7; i++){
+			var casa = coluna+(linha++);
+			if($('#'+casa).size() == 1){
+				if($('#'+casa).find('.piece').size() == 1){
+					var peca = $('#'+casa).find('.piece').attr('class');
+					if(peca.indexOf(typeAttack) >= 0){
+						x++;
+						moves[x] = casa;
+						break;
+					}else{
+						break;
+					}
+				}else{
+					x++;
+					moves[x] = casa;
+				}
+			}
+		}
+		//pra baixo
+		linha = line-1;
+		for(var i = 6; i >= 0; --i){
+			var casa = coluna+(linha--);
+
+			if($('#'+casa).size() == 1){
+				if($('#'+casa).find('.piece').size() == 1){
+					var peca = $('#'+casa).find('.piece').attr('class');
+					if(peca.indexOf(typeAttack) >= 0){
+						x++;
+						moves[x] = casa;
+						break;
+					}else{
+						break;
+					}
+				}else{
+					x++;
+					moves[x] = casa;
+				}
+			}
+		}
+
+		//para a direita
+		var colAtual = nColuna+1;
+		for(var i = 0; i < 7; i++){
+			var proxima = colAtual++;
+			if(objSearchIndex(colunas, proxima) != null){
+				var casa = colunas[proxima]+line;
+				if($('#'+casa).find('.piece').size() == 1){
+					var peca = $('#'+casa).find('.piece').attr('class');
+					if(peca.indexOf(typeAttack) >= 0){
+						x++;
+						moves[x] = casa;
+						break;
+					}else{
+						break;
+					}
+				}else{
+					x++;
+					moves[x] = casa;
+				}			
+			}
+		}
+
+		//para a esquerda
+		var colAtual = nColuna-1;
+		for(var i = 0; i < 7; i++){
+			var anterior = colAtual--;
+			if(objSearchIndex(colunas, anterior) != null){
+				var casa = colunas[anterior]+line;
+				if($('#'+casa).find('.piece').size() == 1){
+					var peca = $('#'+casa).find('.piece').attr('class');
+					if(peca.indexOf(typeAttack) >= 0){
+						x++;
+						moves[x] = casa;
+						break;
+					}else{
+						break;
+					}
+				}else{
+					x++;
+					moves[x] = casa;
+				}			
+			}
+		}
+
+		return moves;
+	}
+
 	function findMovesKnight(square, tipo){
 		if(tipo.indexOf('black') >= 0){
 			var typeAttack = 'white';
