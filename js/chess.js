@@ -14,8 +14,8 @@ $(function(){
 	var checking = false;
 	var checkLonge = false;
 
-	var jogador = 'white';
-	var vezdo = 'white';
+	var jogador = 'black';
+	var vezdo = 'black';
 
 	var clicou = 0;
 	var pecaEscolhida = '';
@@ -161,8 +161,160 @@ $(function(){
 
 		if(tipo.indexOf('bishop') >= 0){
 			possibleMoves = findMovesBishop(square, tipo);
+		}else if(tipo.indexOf('knight') >= 0){
+			possibleMoves = findMovesKnight(square, tipo);
 		}
 		return possibleMoves;
+	}
+	function findMovesKnight(square, tipo){
+		if(tipo.indexOf('black') >= 0){
+			var typeAttack = 'white';
+		}else{
+			var typeAttack = 'black';
+		}
+
+		var line = Number(square[1]);
+		var coluna = square[0];
+		var x = 0;
+		var moves = {};
+
+		//pra cima
+		//+2 linhas +1 coluna
+		//+2 linhas -1 coluna
+
+		//pra baixo
+		//-2 linhas +1 coluna
+		//-2 linhas -1 coluna
+
+		//pra direita cima e baixo
+		//+2 colunas +1 linha
+		//+2 colunas -1 linha
+
+		//esquerda
+		//-2 colunas +1 linha
+		//-2 colunas -1 linha
+
+		var colAtual = Number(objSearch(colunas, coluna));
+		var lineTop = line+2;
+		var lineBottom = line-2;
+
+		var colEsquerda = colAtual-1;
+		var colDireita = colAtual+1;
+
+		var lineTopo = line+1;
+		var lineBaixo = line-1;
+
+		var colRight = colAtual+2;
+		var colLeft = colAtual-2;
+
+		var squareTopRight = colunas[colDireita]+lineTop;
+		var squareTopLeft = colunas[colEsquerda]+lineTop;
+
+		if($('#'+squareTopRight).size()== 1){
+			if($('#'+squareTopRight).find('.piece').size() == 1){
+				var encontrada = $('#'+squareTopRight).find('.piece').attr('class');
+				if(encontrada.indexOf(typeAttack) >= 0){
+					x++;
+					moves[x] = squareTopRight;
+				}
+			}else{
+				x++;
+				moves[x] = squareTopRight
+			}
+		}
+
+		if($('#'+squareTopLeft).size()== 1){
+			if($('#'+squareTopLeft).find('.piece').size() == 1){
+				var encontrada = $('#'+squareTopLeft).find('.piece').attr('class');
+				if(encontrada.indexOf(typeAttack) >= 0){
+					x++;
+					moves[x] = squareTopLeft;
+				}
+			}else{
+				x++;
+				moves[x] = squareTopLeft;
+			}
+		}
+		var squareBottomRight = colunas[colDireita]+lineBottom;
+		if($('#'+squareBottomRight).size()== 1){
+			if($('#'+squareBottomRight).find('.piece').size() == 1){
+				var encontrada = $('#'+squareBottomRight).find('.piece').attr('class');
+				if(encontrada.indexOf(typeAttack) >= 0){
+					x++;
+					moves[x] = squareBottomRight;
+				}
+			}else{
+				x++;
+				moves[x] = squareBottomRight;
+			}
+		}
+		var squareBottomLeft = colunas[colEsquerda]+lineBottom;
+		if($('#'+squareBottomLeft).size()== 1){
+			if($('#'+squareBottomLeft).find('.piece').size() == 1){
+				var encontrada = $('#'+squareBottomLeft).find('.piece').attr('class');
+				if(encontrada.indexOf(typeAttack) >= 0){
+					x++;
+					moves[x] = squareBottomLeft;
+				}
+			}else{
+				x++;
+				moves[x] = squareBottomLeft;
+			}
+		}
+
+		var squareRightTop = colunas[colRight]+lineTopo;
+		if($('#'+squareRightTop).size()== 1){
+			if($('#'+squareRightTop).find('.piece').size() == 1){
+				var encontrada = $('#'+squareRightTop).find('.piece').attr('class');
+				if(encontrada.indexOf(typeAttack) >= 0){
+					x++;
+					moves[x] = squareRightTop;
+				}
+			}else{
+				x++;
+				moves[x] = squareRightTop;
+			}
+		}
+		var squareRightBottom = colunas[colRight]+lineBaixo;	
+		if($('#'+squareRightBottom).size()== 1){
+			if($('#'+squareRightBottom).find('.piece').size() == 1){
+				var encontrada = $('#'+squareRightBottom).find('.piece').attr('class');
+				if(encontrada.indexOf(typeAttack) >= 0){
+					x++;
+					moves[x] = squareRightBottom;
+				}
+			}else{
+				x++;
+				moves[x] = squareRightBottom;
+			}
+		}
+		var squareLeftTop = colunas[colLeft]+lineTopo;
+		if($('#'+squareLeftTop).size()== 1){
+			if($('#'+squareLeftTop).find('.piece').size() == 1){
+				var encontrada = $('#'+squareLeftTop).find('.piece').attr('class');
+				if(encontrada.indexOf(typeAttack) >= 0){
+					x++;
+					moves[x] = squareLeftTop;
+				}
+			}else{
+				x++;
+				moves[x] = squareLeftTop;
+			}
+		}
+		var squareLeftBottom = colunas[colLeft]+lineBaixo;
+		if($('#'+squareLeftBottom).size()== 1){
+			if($('#'+squareLeftBottom).find('.piece').size() == 1){
+				var encontrada = $('#'+squareLeftBottom).find('.piece').attr('class');
+				if(encontrada.indexOf(typeAttack) >= 0){
+					x++;
+					moves[x] = squareLeftBottom;
+				}
+			}else{
+				x++;
+				moves[x] = squareLeftBottom;
+			}
+		}
+		return moves;
 	}
 
 
@@ -477,7 +629,7 @@ $(function(){
 	}
 
 	//printBoard();
-	newGame(fenStr);
+	//newGame(fenStr);
 
 	function objSearch(obj, valor){
 		var retorno = null;

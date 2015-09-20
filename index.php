@@ -23,7 +23,7 @@
 			<div class="square-board dark" id="c7"><div class="piece pawn-black"></div></div>
 			<div class="square-board light" id="d7"><div class="piece pawn-black"></div></div>
 			<div class="square-board dark" id="e7"><div class="piece pawn-black"></div></div>
-			<div class="square-board light" id="f7"><div class="piece pawn-black"></div></div>
+			<div class="square-board light" id="f7"></div>
 			<div class="square-board dark" id="g7"><div class="piece pawn-black"></div></div>
 			<div class="square-board light" id="h7"><div class="piece pawn-black"></div></div>
 
@@ -39,8 +39,8 @@
 			<div class="square-board light" id="b5"></div>
 			<div class="square-board dark" id="c5"></div>
 			<div class="square-board light" id="d5"></div>
-			<div class="square-board dark" id="e5"><div class="piece bishop-white"></div></div>
-			<div class="square-board light" id="f5"></div>
+			<div class="square-board dark" id="e5"><div class="piece knight-white"></div></div>
+			<div class="square-board light" id="f5"><div class="piece pawn-black"></div></div>
 			<div class="square-board dark" id="g5"></div>
 			<div class="square-board light" id="h5"></div>
 			<div class="square-board light" id="a4"></div>
@@ -74,8 +74,8 @@
 			<div class="square-board dark" id="c1"><div class="piece bishop-white"></div></div>
 			<div class="square-board light" id="d1"><div class="piece queen-white"></div></div>
 			<div class="square-board dark" id="e1"><div class="piece king-white"></div></div>
-			<div class="square-board light" id="f1"></div>
-			<div class="square-board dark" id="g1"><div class="piece knight-white"></div></div>
+			<div class="square-board light" id="f1"><div class="piece bishop-white"></div></div>
+			<div class="square-board dark" id="g1"></div>
 			<div class="square-board light" id="h1"><div class="piece rook-white"></div></div>
 			</div>
 			<div class="stats">
