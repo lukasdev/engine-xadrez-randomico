@@ -165,8 +165,28 @@ $(function(){
 			possibleMoves = findMovesKnight(square, tipo);
 		}else if(tipo.indexOf('rook') >= 0){
 			possibleMoves = findMovesRook(square, tipo);
+		}else if(tipo.indexOf('queen') >= 0){
+			possibleMoves = findMovesQueen(square, tipo);
 		}
 		return possibleMoves;
+	}
+
+	function findMovesQueen(square, tipo){
+		var x = 0;
+		var moves = {};
+		var movesHook = findMovesRook(square, tipo);
+
+		$.each(movesHook, function(i, val){
+			x = i;
+			moves[i] = val;
+		});
+		
+		var movesBishop = findMovesBishop(square, tipo);
+		$.each(movesBishop, function(i, val){
+			x++;
+			moves[x] = val;
+		});
+		return moves;
 	}
 
 	function findMovesRook(square, tipo){
