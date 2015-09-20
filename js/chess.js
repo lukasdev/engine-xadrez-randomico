@@ -174,9 +174,9 @@ $(function(){
 	function findMovesQueen(square, tipo){
 		var x = 0;
 		var moves = {};
-		var movesHook = findMovesRook(square, tipo);
+		var movesRook = findMovesRook(square, tipo);
 
-		$.each(movesHook, function(i, val){
+		$.each(movesRook, function(i, val){
 			x = i;
 			moves[i] = val;
 		});
