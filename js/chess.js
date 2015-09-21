@@ -62,8 +62,7 @@ $(function(){
 
 			if(objSearch(movimentosPossiveis, idCasa) != null){
 				if(mate == false){
-					//jogar($(this));
-					alert('Pode jogar');
+					jogar($(this));
 				}else{
 					alert('Check mate');
 				}
@@ -74,6 +73,36 @@ $(function(){
 			}
 		}
 	});
+
+	var jogadas = 0;
+	function jogar(square){
+		pecaEscolhida.remove();
+
+		if(vezdo == 'white'){
+			jogadas++;
+			if($('#'+vai_para).find('.piece').size() == 1){
+				$('tbody#jogadas').append('<tr><td>'+jogadas+'</td><td>'+ultimaCasaEscolhida+'x'+vai_para+'</td><td id="'+jogadas+'"></td></tr>');
+			}else{
+				$('tbody#jogadas').append('<tr><td>'+jogadas+'</td><td>'+ultimaCasaEscolhida+'-'+vai_para+'</td><td id="'+jogadas+'"></td></tr>');
+			}
+		}else{
+			if($('#'+vai_para).find('.piece').size() == 1){
+				$('td#'+jogadas).html(ultimaCasaEscolhida+'x'+vai_para);
+			}else{
+				$('td#'+jogadas).html(ultimaCasaEscolhida+'-'+vai_para);
+			}
+		}
+		square.html(pecaEscolhida);
+
+		if(vezdo == 'white'){
+			vezdo = 'black';
+			jogador = 'black';
+		}else{
+			vezdo = 'white';
+			jogador = 'white';			
+		}
+		$('.square-board').removeClass('possible');
+	}
 
 	var fenStr = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w';
 	function parseFen(fen){
@@ -851,8 +880,8 @@ $(function(){
 		}
 	}
 
-	//printBoard();
-	//newGame(fenStr);
+	printBoard();
+	newGame(fenStr);
 
 	function objSearch(obj, valor){
 		var retorno = null;
