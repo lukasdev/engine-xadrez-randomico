@@ -50,7 +50,7 @@
 			<div class="square-board light" id="e4"></div>
 			<div class="square-board dark" id="f4"></div>
 			<div class="square-board light" id="g4"></div>
-			<div class="square-board dark" id="h4"><div class="piece queen-white"></div></div>
+			<div class="square-board dark" id="h4"></div>
 			<div class="square-board dark" id="a3"></div>
 			<div class="square-board light" id="b3"></div>
 			<div class="square-board dark" id="c3"></div>
@@ -72,7 +72,7 @@
 			<div class="square-board dark" id="a1"><div class="piece rook-white"></div></div>
 			<div class="square-board light" id="b1"><div class="piece knight-white"></div></div>
 			<div class="square-board dark" id="c1"><div class="piece bishop-white"></div></div>
-			<div class="square-board light" id="d1"></div>
+			<div class="square-board light" id="d1"><div class="piece queen-white"></div></div>
 			<div class="square-board dark" id="e1"><div class="piece king-white"></div></div>
 			<div class="square-board light" id="f1"><div class="piece bishop-white"></div></div>
 			<div class="square-board dark" id="g1"><div class="piece knight-white"></div></div>
