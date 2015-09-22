@@ -63,6 +63,7 @@ $(function(){
 			if(objSearch(movimentosPossiveis, idCasa) != null){
 				if(mate == false){
 					jogar($(this));
+					bloqueiosRei();
 				}else{
 					alert('Check mate');
 				}
@@ -73,11 +74,64 @@ $(function(){
 			}
 		}
 	});
+	function findMovesOponent(){
+		var movesOponent = {};
+		var n = 0;
+		if(vezdo == 'white'){
+			var oponent = 'black';
+		}else{
+			var oponent = 'white';
+		}
+
+		$('.piece').each(function(){
+			var peca = $(this).attr('class');
+			var casa = $(this).parent().attr('id');
+
+			if(peca.indexOf(oponent) >= 0){
+				movesOponent[n] = verifyPiece($(this), casa);
+				n++;
+			}
+		});
+
+		return movesOponent;
+	}
+
+	function bloqueiosRei(){
+		var movesOponent = findMovesOponent();
+		if(vezdo == 'white'){
+			$.each(movesOponent, function(peca, moves){
+				$.each(moves, function(n, move){
+					if(objSearch(movesKings.white, move) != null){
+						var indice = objSearch(movesKings.white, move);
+						delete movesKings.white[indice];
+					}
+				});
+			});
+		}else{
+			$.each(movesOponent, function(peca, moves){
+				$.each(moves, function(n, move){
+					if(objSearch(movesKings.black, move) != null){
+						var indice = objSearch(movesKings.black, move);
+						delete movesKings.black[indice];
+					}
+				});
+			});
+		}
+	}
 
 	var jogadas = 0;
 	function jogar(square){
 		pecaEscolhida.remove();
+		//movimentos do rei oponent
+		if(vezdo == 'white'){
+			var reiOponent = $('.piece.king-black').parent().attr('id');
+			movesKings.black = findMovesKing(reiOponent, 'black');
+		}else{
+			var reiOponent = $('.piece.king-white').parent().attr('id');
+			movesKings.white = findMovesKing(reiOponent, 'white');
+		}
 
+		//notations
 		if(vezdo == 'white'){
 			jogadas++;
 			if($('#'+vai_para).find('.piece').size() == 1){
@@ -94,6 +148,7 @@ $(function(){
 		}
 		square.html(pecaEscolhida);
 
+		//muda jogador da vez
 		if(vezdo == 'white'){
 			vezdo = 'black';
 			jogador = 'black';
@@ -196,8 +251,10 @@ $(function(){
 			possibleMoves = findMovesRook(square, tipo);
 		}else if(tipo.indexOf('queen') >= 0){
 			possibleMoves = findMovesQueen(square, tipo);
-		}else if(tipo.indexOf('king') >= 0){
-			possibleMoves = findMovesKing(square, tipo);
+		}else if(tipo.indexOf('king-black') >= 0){
+			possibleMoves = movesKings.black;
+		}else if(tipo.indexOf('king-white') >= 0){
+			possibleMoves = movesKings.white;
 		}
 		return possibleMoves;
 	}
