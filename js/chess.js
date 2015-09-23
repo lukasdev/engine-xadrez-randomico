@@ -67,12 +67,67 @@ $(function(){
 					alert('Check mate');
 				}
 
-				//engine(vezdo, checking);
+				engine(vezdo, checking);
 			}else{
 				alert('Jogada é invalida');
 			}
 		}
 	});
+
+	function engine(vezde, checked){
+		var engine = 'black';
+		var pecasEngine = {};
+
+		if(vezde == engine){
+			//percorrer todas as pesssa e encontrar seus movimentos possiveis
+			$('.piece').each(function(){
+				var casa = $(this).parent().attr('id');
+				var peca = $(this).attr('class');
+				if(peca.indexOf(engine) >= 0){
+					pecasEngine[casa] = verifyPiece($(this), casa);
+					var qtdJogadas = 0;
+					$.each(pecasEngine[casa], function(i, jogada){
+						qtdJogadas++;
+					});
+					if(qtdJogadas == 0){
+						delete pecasEngine[casa];
+					}
+				}
+			});
+
+			//escolher uma das peças, antes verificar quantas peças disponiveis
+			var pecasDisponiveis = 0;
+			$.each(pecasEngine, function(peca, jogadas){
+				pecasDisponiveis++;
+			});
+			var pecaRandomizada = Math.floor((Math.random()*pecasDisponiveis)+1);
+			var pecaEscolhida = 0;
+
+			//escolher peca
+			$.each(pecasEngine, function(square, jogadas){
+				pecaEscolhida++;
+				if(pecaEscolhida == pecaRandomizada){
+					$('#'+square+' .piece').click();
+					var qtdJogadasDisponiveis = 0;
+					$.each(pecasEngine[square], function(i, jogada){
+						qtdJogadasDisponiveis++;
+					});
+
+					//randomiza uma jogada
+					var jogadaRandomizada = Math.floor((Math.random()*qtdJogadasDisponiveis)+1);
+					var jogadaEscolhida = 0;
+					$.each(pecasEngine[square], function(i, jogada){
+						jogadaEscolhida++;
+						if(jogadaEscolhida == jogadaRandomizada){
+							$('#'+jogada).click();
+						}
+					});
+				}
+			});
+
+		}
+	}
+
 	function findMovesOponent(){
 		var movesOponent = {};
 		var n = 0;
@@ -117,6 +172,20 @@ $(function(){
 		});
 
 		return movesOponent;
+	}
+	//leva em consideração jogador da vez
+	function squareAttacked(sq){
+		var retorno = 0;
+		var movimentosOponente = findMovesOponent();
+		$.each(movimentosOponente, function(i, movimentos){
+			$.each(movimentos, function(i, casa){
+				if(casa == sq){
+					retorno = 1;
+				}
+			});
+		});
+
+		return retorno;
 	}
 
 	function bloqueiosRei(){
@@ -170,7 +239,6 @@ $(function(){
 			}
 		}
 		square.html(pecaEscolhida);
-
 		//muda jogador da vez
 		if(vezdo == 'white'){
 			vezdo = 'black';
@@ -178,6 +246,9 @@ $(function(){
 		}else{
 			vezdo = 'white';
 			jogador = 'white';			
+		}
+		if(squareAttacked(reiOponent) == 1){
+			checking = true;
 		}
 		$('.square-board').removeClass('possible');
 	}
