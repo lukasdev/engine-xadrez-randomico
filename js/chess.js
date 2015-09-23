@@ -49,7 +49,6 @@ $(function(){
 	$('body').on('click', '.square-board', function(){
 		var temPeca = $(this).find('.piece').size();
 		var idCasa = $(this).attr('id');
-		//verifyPiece(pecaEscolhida, ultimaCasaEscolhida);
 
 		var movimentosPossiveis = verifyPiece(pecaEscolhida, ultimaCasaEscolhida);
 		$.each(movimentosPossiveis, function(i, sqr){
@@ -88,8 +87,32 @@ $(function(){
 			var casa = $(this).parent().attr('id');
 
 			if(peca.indexOf(oponent) >= 0){
-				movesOponent[n] = verifyPiece($(this), casa);
-				n++;
+				if(peca.indexOf('pawn') >= 0){
+					var col = Number(objSearch(colunas, casa[0]));
+					var proxima = col+1;
+					var anterior = col-1;
+
+					if(peca.indexOf('white') >= 0){
+						var linhaDiagonal = Number(casa[1])+1;
+					}else{
+						var linhaDiagonal = Number(casa[1])-1;
+					}
+
+					var atac1;
+					var atac2;
+					if(objSearchIndex(colunas, proxima) != null){
+						atac1 = colunas[proxima]+linhaDiagonal;
+					}
+
+					if(objSearchIndex(colunas, anterior) != null){
+						atac2 = colunas[anterior]+linhaDiagonal;
+					}
+					n++;
+					movesOponent[n] = {0:atac1, 1:atac2};
+				}else{
+					movesOponent[n] = verifyPiece($(this), casa);
+					n++;
+				}
 			}
 		});
 
@@ -837,28 +860,7 @@ $(function(){
 
 			//verifica duas diagonais
 			var linhaDiagonal = line+1;
-			if(objSearchIndex(colunas, proxima) != null){
-				var coluna = colunas[proxima]+linhaDiagonal;
-				//alert('encontrou '+coluna);
-				if($('#'+coluna).find('.piece').size() == 1){
-					var pecaEncontrada = $('#'+coluna).find('.piece').attr('class');
-					if(pecaEncontrada.indexOf('black') >= 0){
-						x++;
-						moves[x] = coluna;
-					}
-				}
-			}
-
-			if(objSearchIndex(colunas, anterior) != null){
-				var coluna = colunas[anterior]+linhaDiagonal;
-				if($('#'+coluna).find('.piece').size() == 1){
-					var pecaEncontrada = $('#'+coluna).find('.piece').attr('class');
-					if(pecaEncontrada.indexOf('black') >= 0){
-						x++;
-						moves[x] = coluna;
-					}
-				}
-			}
+			var typeAttack = 'black';
 		}else{
 			//movimentos peões pretos
 			if(line == 7){
@@ -892,29 +894,31 @@ $(function(){
 
 			//verifica duas diagonais
 			var linhaDiagonal = line-1;
-			if(objSearchIndex(colunas, proxima) != null){
-				var coluna = colunas[proxima]+linhaDiagonal;
-				//alert('encontrou '+coluna);
-				if($('#'+coluna).find('.piece').size() == 1){
-					var pecaEncontrada = $('#'+coluna).find('.piece').attr('class');
-					if(pecaEncontrada.indexOf('white') >= 0){
-						x++;
-						moves[x] = coluna;
-					}
-				}
-			}
-
-			if(objSearchIndex(colunas, anterior) != null){
-				var coluna = colunas[anterior]+linhaDiagonal;
-				if($('#'+coluna).find('.piece').size() == 1){
-					var pecaEncontrada = $('#'+coluna).find('.piece').attr('class');
-					if(pecaEncontrada.indexOf('white') >= 0){
-						x++;
-						moves[x] = coluna;
-					}
-				}
-			}
+			var typeAttack = 'white';
 			//termina movimentos peões pretos
+		}
+
+		if(objSearchIndex(colunas, proxima) != null){
+			var coluna = colunas[proxima]+linhaDiagonal;
+			//alert('encontrou '+coluna);
+			if($('#'+coluna).find('.piece').size() == 1){
+				var pecaEncontrada = $('#'+coluna).find('.piece').attr('class');
+				if(pecaEncontrada.indexOf(typeAttack) >= 0){
+					x++;
+					moves[x] = coluna;
+				}
+			}
+		}
+
+		if(objSearchIndex(colunas, anterior) != null){
+			var coluna = colunas[anterior]+linhaDiagonal;
+			if($('#'+coluna).find('.piece').size() == 1){
+				var pecaEncontrada = $('#'+coluna).find('.piece').attr('class');
+				if(pecaEncontrada.indexOf(typeAttack) >= 0){
+					x++;
+					moves[x] = coluna;
+				}
+			}
 		}
 
 		return moves;
