@@ -10,7 +10,7 @@ $(function(){
 	colunas[7] = 'h';
 	var mate = false;
 	var movesKings = {'black':{}, 'white': {}};
-	var movesPecaCheck = {};
+	var casaChecking = '';
 	var checking = false;
 	var checkLonge = false;
 
@@ -67,18 +67,20 @@ $(function(){
 					alert('Check mate');
 				}
 
-				engine(vezdo, checking);
+				engine();
 			}else{
 				alert('Jogada é invalida');
 			}
 		}
 	});
 
-	function engine(vezde, checked){
+	function engine(){
 		var engine = 'black';
 		var pecasEngine = {};
+		var jogou = false;
+		var checked = false;
 
-		if(vezde == engine){
+		if(vezdo == engine){
 			//percorrer todas as pesssa e encontrar seus movimentos possiveis
 			$('.piece').each(function(){
 				var casa = $(this).parent().attr('id');
@@ -87,7 +89,18 @@ $(function(){
 					pecasEngine[casa] = verifyPiece($(this), casa);
 					var qtdJogadas = 0;
 					$.each(pecasEngine[casa], function(i, jogada){
-						qtdJogadas++;
+						if(checking == true){
+							checked = true;
+
+							if(jogada == casaChecking){
+								$('#'+casa+' .piece').click();
+								$('#'+casaChecking).click();
+								jogou = true;
+								checking = false;
+							}
+						}else{
+							qtdJogadas++;
+						}
 					});
 					if(qtdJogadas == 0){
 						delete pecasEngine[casa];
@@ -95,6 +108,12 @@ $(function(){
 				}
 			});
 
+			if(checked == true && jogou == true){
+				return false;
+			}else if(checked == true && jogou == false){
+				alert('check muito longe');
+				return false;
+			}
 			//escolher uma das peças, antes verificar quantas peças disponiveis
 			var pecasDisponiveis = 0;
 			$.each(pecasEngine, function(peca, jogadas){
@@ -214,15 +233,16 @@ $(function(){
 	var jogadas = 0;
 	function jogar(square){
 		pecaEscolhida.remove();
-		//movimentos do rei oponent
-		if(vezdo == 'white'){
-			var reiOponent = $('.piece.king-black').parent().attr('id');
-			movesKings.black = findMovesKing(reiOponent, 'black');
-		}else{
-			var reiOponent = $('.piece.king-white').parent().attr('id');
-			movesKings.white = findMovesKing(reiOponent, 'white');
-		}
+		var tipoPeca = pecaEscolhida.attr('class');
+		if(tipoPeca.indexOf('pawn') >= 0){
+			if(Number(ultimaCasaEscolhida[1]) == 7 && Number(vai_para[1]) == 8){
+				pecaEscolhida.attr('class', 'piece queen-white');
+			}
 
+			if(Number(ultimaCasaEscolhida[1]) == 2 && Number(vai_para[1]) == 1){
+				pecaEscolhida.attr('class', 'piece queen-black');
+			}
+		}
 		//notations
 		if(vezdo == 'white'){
 			jogadas++;
@@ -239,6 +259,17 @@ $(function(){
 			}
 		}
 		square.html(pecaEscolhida);
+
+		//movimentos do rei oponent
+		if(vezdo == 'white'){
+			var reiOponent = $('.piece.king-black').parent().attr('id');
+			movesKings.black = findMovesKing(reiOponent, 'black');
+		}else{
+			var reiOponent = $('.piece.king-white').parent().attr('id');
+			movesKings.white = findMovesKing(reiOponent, 'white');
+		}
+
+
 		//muda jogador da vez
 		if(vezdo == 'white'){
 			vezdo = 'black';
@@ -249,6 +280,7 @@ $(function(){
 		}
 		if(squareAttacked(reiOponent) == 1){
 			checking = true;
+			casaChecking = vai_para;
 		}
 		$('.square-board').removeClass('possible');
 	}
@@ -860,8 +892,8 @@ $(function(){
 		var colBottomLeft = '';
 		for(var i = 0; i <= 6; i++){
 			if(nColunaAtual == ''){
-				nColunaAtual = objSearch(colunas, coluna);
-				colBottomLeft = nColunaAtual--;
+				nColunaAtual = Number(objSearch(colunas, coluna));
+				colBottomLeft = nColunaAtual-1;
 			}
 			if(objSearchIndex(colunas, colBottomLeft) != null){
 				if(colunas[colBottomLeft] != coluna){
